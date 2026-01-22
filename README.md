@@ -24,11 +24,7 @@ focusing on practical applications of generative AI tools for real-world tasks.
 
 ## Repository Structure
 ```
-📁 Module-1-AI-Daily-Life/
-📁 Module-2-FailureBot/
-📁 Module-3-StudyBuddy/
-📁 Module-4-6-Project-Planning/
-📁 Module-7-8-Final-Project/
+
 📄 README.md
 ```
 
