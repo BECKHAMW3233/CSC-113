@@ -24,7 +24,7 @@ focusing on practical applications of generative AI tools for real-world tasks.
 
 ## Repository Structure
 ```
-
+CSC-113/week-02-sage/
 📄 README.md
 ```
 
