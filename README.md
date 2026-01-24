@@ -25,6 +25,23 @@ focusing on practical applications of generative AI tools for real-world tasks.
 ## Repository Structure
 ```
 CSC-113/week-02-sage/
+#### Week 2: AI Tools & First Collaborations  
+**Date**: Jan 20 - Jan 26, 2026  
+
+**What I learned this week**:  
+- Qwen3:32B excels in structured cybersecurity tasks (e.g., compliance tables).  
+- Local AI deployment aligns with federal data security requirements.  
+
+**What challenged me**:  
+- Measuring TPS accurately required script adjustments.  
+
+**What I'm proud of**:  
+- Built a SAGE workspace aligned with federal compliance standards.  
+
+**Questions I still have**:  
+- How to optimize Qwen3 for real-time network traffic analysis?  
+
+
 📄 README.md
 ```
 
