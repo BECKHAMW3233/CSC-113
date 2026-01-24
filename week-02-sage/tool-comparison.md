@@ -36,4 +36,8 @@
 ## Federal Relevance  
 - **Gemini’s structured outputs** align with **NIST SP 800-12 documentation standards**.  
 - **ChatGPT’s GitHub plan** integrates well with **DevSecOps pipelines**.  
-- **Claude’s creativity** supports **red team training scenarios** (e.g., phishing simulations).  
+- **Claude’s creativity** supports **red team training scenarios** (e.g., phishing simulations).
+
+
+
+this was done using ollama ai   qwen3:32b model
