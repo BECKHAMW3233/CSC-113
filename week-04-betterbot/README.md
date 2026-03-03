@@ -2,7 +2,7 @@
 
 ## Assignment Info
 **Course:** CSC-113 AI Fundamentals  
-**Assignment:** H.2.2 - The Better Bot  
+**Assignment:** H.3.1 - The Better Bot  
 **Student:** William Beckham III  
 **Date:** March 2, 2026
 
