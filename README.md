@@ -64,21 +64,64 @@ A hands-on exploration of artificial intelligence and machine learning fundament
 
 ---
 
+### Week 2 (Continued): SAGE Development Environment & AI-Assisted Coding
+**Date:** Feb 2 - Feb 9, 2026  
+**Assignment:** H.1.2 Track A (Code Builders)
+
+**What I built:**
+* `hello_sage.py` — Interactive SAGE introduction script
+* `prompt_tracker.py` — Command-line prompt library manager built with Kevin (Qwen3:32B)
+
+**What I learned about AI-assisted coding:**
+* Local AI deployment maintains data sovereignty at cost of processing latency (5-10 min vs instant)
+* AI code generation quality consistent for standard Python regardless of cloud/local deployment
+* Documentation of AI collaboration workflows increasingly relevant for federal cybersecurity positions
+
+**Technical skills developed:**
+* GitHub Codespaces cloud development environment
+* Python file I/O and menu-driven program design
+* Professional Issue → Branch → Code → PR workflow
+* Data persistence and category-based organization
+
+**What challenged me:**
+* Assignment calibrated for Python beginners - skill level significantly higher than target audience
+* Documenting basic development process felt trivial compared to actual capability level
+
+**What I'm proud of:**
+* Maintained operational security through local AI infrastructure while completing collaborative workflow
+* Executed complete professional Git workflow correctly
+* 45-minute completion time for 2.5-hour assignment estimate
+
+**Questions I still have:**
+* How to optimize local AI processing speed for real-time security automation workflows?
+* Best practices for AI-assisted development in classified/sensitive environments?
+
+**AI Tools Used:**
+* Kevin (Qwen3:32B via AnythingLLM) - Local code generation maintaining data sovereignty
+* GitHub Codespaces - Cloud development environment
+* Claude - Documentation formatting and proofreading assistance
+
+---
+
 ## Skills & Tools
 
-`Generative AI` `Prompt Engineering` `GitHub` `Version Control` `AI Ethics` `Project Management` `Local AI Deployment` `Ollama` `AnythingLLM` `Bot Design` `User Experience`
+`Generative AI` `Prompt Engineering` `GitHub` `Version Control` `AI Ethics` `Project Management` `Local AI Deployment` `Ollama` `AnythingLLM` `Bot Design` `User Experience` `Python` `GitHub Codespaces`
 
 ---
 
 ## Repository Structure
-
 ```
 CSC-113/
 ├── week-02-sage/
 │   ├── README.md
 │   ├── tool-comparison.md
 │   ├── kevin-conversation.md
-│   └── prompt-library.md
+│   ├── prompt-library.md
+│   ├── hello_sage.py
+│   ├── prompt_tracker.py
+│   ├── my-prompts.txt
+│   ├── technical-setup.md
+│   └── ai-coding-session.md
 ├── week-03-badbot/
 │   ├── README.md
 │   ├── bot-config
