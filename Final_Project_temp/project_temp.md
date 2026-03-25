@@ -287,20 +287,30 @@ Three deployment architectures were fully implemented and tested before committi
 
 ### Prerequisites
 
-| Component | Minimum | Nominal | Preferred |
-|---|---|---|---|
-| OS | Windows 10 64-bit | Windows 11 Pro 64-bit | Windows 11 Pro 64-bit (latest build) |
-| CPU | 6-core / 12-thread | 8-core / 16-thread | 12-core / 24-thread or better |
-| System RAM | 16GB | 32GB | 64GB+ |
-| GPU VRAM | 8GB | 12GB | 16GB+ |
-| GPU | Any NVIDIA with CUDA support | RTX 3070 / 3080 class | RTX 4080 / 4090 class |
-| Disk Space | 50GB free | 100GB free | 200GB+ dedicated storage |
-| CUDA Version | 11.8 | 12.0 | 12.4+ |
+| Component | Minimum | Recommended | Optimal | Commercial / Enterprise |
+|---|---|---|---|---|
+| OS | Windows 10 64-bit | Windows 11 Pro 64-bit | Windows 11 Pro 64-bit (latest build) | Windows 11 Pro / Server 2025 / Linux |
+| CPU | 6-core / 12-thread | 8-core / 16-thread | 12-core / 24-thread or better | AMD Threadripper PRO 9995WX (96-core / 192-thread) or Intel Xeon W class |
+| System RAM | 16GB | 32GB | 64GB+ | 256GB – 2TB DDR5 ECC (8-channel) |
+| GPU VRAM | 4GB | 12GB | 24GB–32GB | 96GB (NVIDIA RTX PRO 6000 Blackwell) |
+| GPU | Any NVIDIA with CUDA support | RTX 4070 / 4080 class | RTX 5080 (16GB GDDR7) / RTX 5090 (32GB GDDR7) | NVIDIA RTX PRO 6000 Blackwell Workstation / Server Edition |
+| Storage Type | SATA SSD | NVMe M.2 SSD | NVMe M.2 SSD (PCIe Gen 4) | NVMe M.2 PCIe Gen 5 / Enterprise NVMe RAID |
+| Disk Space | 50GB free | 100GB free | 200GB+ dedicated storage | 1TB+ dedicated AI model storage |
+| CUDA Version | 11.8 | 12.0 | 12.4+ | 12.4+ |
+| **Estimated Build Cost** | **$400 – $800** | **$1,500 – $2,500** | **$4,000 – $8,000+** | **$15,000 – $30,000+** |
+
+> **Estimated build cost notes (March 2026):**
+> - **Minimum ($400–$800):** Represents an older mid-range system or budget build. GPU alone in this tier (4GB VRAM) costs $100–$200 used. Functional but not a viable deployment platform for serious work.
+> - **Recommended ($1,500–$2,500):** A capable mid-range build with an RTX 4070 class GPU (~$400–$600 used, $500–$700 new), 32GB RAM, NVMe storage, and a modern mid-range CPU. Represents a solid entry point for practical local AI work.
+> - **Optimal ($4,000–$8,000+):** RTX 5090 alone is currently $3,000–$4,500+ due to GDDR7 supply shortages as of March 2026 (MSRP $1,999 but rarely available at that price). RTX 5080 is more accessible at $999–$1,500. This deployment (RTX 4080 + Ryzen 9 7900X + 64GB DDR5) was built for gaming and sits in this tier at approximately $3,500–$4,500 total system cost.
+> - **Commercial / Enterprise ($15,000–$30,000+):** AMD Threadripper PRO 9995WX CPU alone is approximately $11,699. The RTX PRO 6000 Blackwell GPU is $8,500–$9,200. A fully configured workstation with 256GB+ ECC RAM, enterprise NVMe storage, and a professional chassis easily reaches $25,000–$35,000 or more.
 
 **Tier notes:**
-- **Minimum** — runs 7B models reliably, 13B models slowly, anything larger will struggle or fail
-- **Nominal** — runs 13B–20B models well, 32B models at reduced speed with system RAM offload
-- **Preferred** — runs the full model library in this deployment including 32B class at 3–5 tokens/second and 70B with partial offload
+- **Minimum (4GB VRAM)** — Technically Ollama will load and run, but this should not be considered a viable deployment configuration. At 4GB VRAM virtually all model layers offload to system RAM, response times become impractical, and models capable of real analytical work will not fit. This tier exists to acknowledge the technical floor, not to recommend it.
+- **Recommended** — runs 13B–20B models well, 32B models at reduced speed with system RAM offload
+- **Optimal** — runs the full model library in this deployment including 32B class at 3–5 tokens/second and 70B with partial offload
+- **Commercial / Enterprise** — the NVIDIA RTX PRO 6000 Blackwell's 96GB of GDDR7 VRAM fits 70B models entirely in VRAM at FP8 quality with significant headroom remaining, eliminating system RAM offload entirely for the largest practical models. Paired with the AMD Threadripper PRO 9995WX (96 cores / 192 threads, up to 2TB DDR5 ECC on the WRX90 platform), this configuration handles multiple simultaneous large model instances, fine-tuning workloads, and inference at production scale — far beyond the needs of a single analyst workstation. This tier represents what a federal SOC or AI-enabled operations center would deploy, not a personal infrastructure build.
+- **Storage** — NVMe M.2 is strongly recommended for both the Ollama installation and the model library. Model files range from 4GB to 42GB and must be read from disk into VRAM/RAM at load time. An NVMe M.2 drive — particularly PCIe Gen 4 or Gen 5 — dramatically reduces model load times compared to a SATA SSD and makes HDD storage impractical for this use case. Store both the Ollama application and the model directory on the same NVMe drive for best results.
 
 ---
 
@@ -1077,11 +1087,14 @@ The RTX 4080's 16GB VRAM fits:
 - 32B–33B models at Q4 quantization (some VRAM margin left)
 - 70B models only at aggressive Q4 quantization with partial system RAM offload
 
-**What happens with less VRAM:**
+**What happens with less or more VRAM:**
 
-- **8GB VRAM (e.g., RTX 3070):** Limited to 7B models at Q4. Anything larger requires heavy system RAM offload, dropping inference speed to 0.5–1 token/second — barely usable for analytical work.
-- **12GB VRAM (e.g., RTX 3080 12GB):** Can run 13B models well and 33B models at aggressive quantization with significant quality degradation.
-- **24GB VRAM (e.g., RTX 3090/4090):** Can run 33B models at Q8 (higher quality) and 70B models at Q4 without system RAM offload.
+- **8GB VRAM (e.g., RTX 4060):** Limited to 7B models at Q4. Anything larger requires heavy system RAM offload, dropping inference speed to 0.5–1 token/second — barely usable for analytical work.
+- **12GB VRAM (e.g., RTX 5070):** Can run 13B models well and 33B models at aggressive quantization with significant quality degradation.
+- **16GB VRAM (e.g., RTX 4080 / RTX 5080 / RTX 5070 Ti):** Fits the 32B–33B model class at Q4 — the current sweet spot for capable local AI inference.
+- **24GB VRAM (e.g., RTX 4090):** Can run 33B models at Q8 and 70B models at Q4 without system RAM offload.
+- **32GB VRAM (e.g., RTX 5090):** Can run 70B models at Q8 quality and opens the door to 100B+ parameter models that are otherwise impractical on consumer hardware.
+- **96GB VRAM (NVIDIA RTX PRO 6000 Blackwell):** Fits 70B models entirely in VRAM at FP8 precision with ~26GB of headroom remaining. Enables 32B models at full FP16 quality with no offload, multiple simultaneous model instances, and production-scale inference workloads. At $8,500–$9,200, this is commercial workstation territory — not a personal build, but the benchmark for what a federal AI operations deployment would look like on a single workstation.
 
 **The 16GB sweet spot:** The RTX 4080's 16GB fits the 32B–33B models that represent the best capability/cost tradeoff for security analysis work. These models are analytically capable enough for real threat intelligence work while running at 3–5 tokens/second — operationally usable speeds.
 
@@ -1124,6 +1137,72 @@ When a model exceeds VRAM and offloads to system RAM, inference speed drops beca
 This is why the hardware configuration in this project was not arbitrary — 16GB VRAM and 64GB system RAM were selected together as a matched pair to support the specific model library being deployed.
 
 ---
+
+### How VRAM and System RAM Work Together to Expand Model Capacity
+
+The key insight is that VRAM and system RAM are not independent constraints — they function as a combined memory pool for model inference. The total addressable capacity for a model is approximately VRAM + available system RAM, with VRAM being the fast tier and system RAM the slower offload tier.
+
+Upgrading either component expands what you can run. Upgrading both compounds the benefit.
+
+**Combined capacity vs. runnable model size (Q4 quantization):**
+
+| VRAM | System RAM | Combined Usable | Largest Practical Model (Q4) |
+|---|---|---|---|
+| 4GB | 16GB | ~12GB usable | 7B only — not a viable deployment |
+| 8GB | 32GB | ~28GB usable | 13B well, 20B with offload |
+| 12GB | 32GB | ~32GB usable | 20B–30B with moderate offload (RTX 5070) |
+| 16GB | 32GB | ~38GB usable | 32B with offload, 70B marginal (RTX 4080 / 5080 / 5070 Ti) |
+| 16GB | 64GB | ~68GB usable | 32B at speed, 70B reliably (this deployment) |
+| 24GB | 64GB | ~80GB usable | 70B well, 100B+ experimental (RTX 4090) |
+| 32GB | 64GB | ~88GB usable | 70B at full Q8 quality, 100B+ viable (RTX 5090) |
+| 32GB | 128GB | ~150GB usable | 100B+ models, approaching frontier scale (RTX 5090) |
+| 96GB | 256GB+ | ~340GB+ usable | 70B at FP8 in VRAM only, 200B+ with offload, multiple simultaneous models (RTX PRO 6000 Blackwell) |
+
+> The "combined usable" figure is approximate — OS overhead, application memory, and PCIe bandwidth constraints all affect real-world performance. These figures represent practical operational capacity, not theoretical maximums.
+
+**The upgrade priority order:** If you are resource-constrained, upgrade VRAM first — it has the largest impact on inference speed since it is the fast tier. Upgrading system RAM extends what you can *run* but at slower speeds due to PCIe offload. The optimal configuration maximizes both.
+
+---
+
+### How Local Models Compare to Commercial AI in Parameter Scale
+
+A frequent question when evaluating local AI is how open-source models compare to the commercial services they are replacing. The answer requires some nuance — commercial providers do not publish exact parameter counts — but credible estimates based on research papers, benchmark performance, and industry analysis give a reasonable picture.
+
+**Estimated parameter counts for major commercial models:**
+
+| Model | Provider | Estimated Parameters | Notes |
+|---|---|---|---|
+| GPT-3.5 | OpenAI | ~175B | Published — the original GPT-3 architecture |
+| GPT-4 | OpenAI | ~1.8T (estimated) | Widely cited as a mixture-of-experts architecture |
+| GPT-4o | OpenAI | ~200B (estimated) | Optimized variant, smaller than base GPT-4 |
+| Claude 3 Opus | Anthropic | ~340B (estimated) | Unconfirmed, inferred from benchmark positioning |
+| Claude 3.5 Sonnet | Anthropic | ~175B (estimated) | Unconfirmed |
+| Gemini 1.5 Pro | Google | ~1T (estimated) | Unconfirmed, multimodal architecture |
+| Gemini 2.0 Flash | Google | ~50B (estimated) | Optimized for speed over scale |
+
+**Local models in this deployment for comparison:**
+
+| Model | Parameters | Size on Disk (Q4) |
+|---|---|---|
+| `phi4-reasoning:14b` | 14B | 11GB |
+| `ALIENTELLIGENCE/cybersecuritythreatanalysisv2` | ~7B (estimated) | 4.7GB |
+| `jimscard/blackhat-hacker:v2` | ~13B (estimated) | 9.2GB |
+| `deepseek-r1:32b` | 32B | 19GB |
+| `deepseek-coder:33b-instruct` | 33B | 18GB |
+| `qwen3-coder:30b` | 30B | 18GB |
+| `qwen3:32b` | 32B | 20GB |
+| `llama3.1:70b-instruct-q4_K_M` | 70B | 42GB |
+
+**What this means in practice:**
+
+The largest local model in this library — Llama 3.1 70B — sits well below the estimated parameter counts of GPT-4, Claude 3 Opus, or Gemini 1.5 Pro. On general reasoning tasks, those commercial models will outperform a local 70B model.
+
+However, parameter count is not the only variable. Domain-specific fine-tuning — as seen in the cybersecurity and coding models in this library — can produce output that outperforms a larger general model on the specific task it was trained for. A 7B model trained exclusively on threat intelligence data may produce more operationally useful threat analysis than a 1T general model that has to context-switch across millions of domains.
+
+The practical conclusion: local models at current hardware limits cannot match the raw general capability of frontier commercial models. They can and do match or exceed them on specific domains — and they do so with complete data sovereignty, which for federal cybersecurity work is the deciding factor regardless of raw capability comparison.
+
+---
+
 
 ## Security and Privacy Considerations
 
