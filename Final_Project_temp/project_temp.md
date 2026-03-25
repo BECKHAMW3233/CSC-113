@@ -66,11 +66,10 @@ What started as personal curiosity evolved into directly applicable infrastructu
 
 | Component | Specification |
 |---|---|
-| CPU Block | EKWB Velocity 2 (custom closed-loop) |
-| Radiator | EKWB XE 360mm — 60mm thick |
-| Pump | DDC with soft tubing configuration |
+| CPU Cooling | Custom closed-loop water cooling — EKWB Velocity 2 block, EKWB XE 360mm radiator (60mm thick), DDC pump, soft tubing |
+| GPU Cooling | Air cooled — Zotac RTX 4080 stock cooling solution |
 
-The cooling architecture is not incidental — sustained AI inference workloads push the CPU and GPU harder than typical desktop use. The custom loop on the Ryzen 9 7900X maintains thermal stability during long inference runs where lesser cooling would introduce thermal throttling and inconsistent token generation speeds.
+The CPU runs a custom water cooling loop for sustained thermal stability during long inference runs. The GPU relies on its stock air cooler, which handles the RTX 4080's thermal load adequately at the inference workloads used in this deployment. Sustained inference on large models does increase GPU temperatures compared to typical gaming use — temperatures should be monitored and case airflow verified to keep the RTX 4080 within safe operating range during extended analytical sessions.
 
 ### Why This Hardware
 
