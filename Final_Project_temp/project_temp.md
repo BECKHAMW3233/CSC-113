@@ -303,7 +303,10 @@ Three deployment architectures were fully implemented and tested before committi
 3. Select **Download for Windows**
 4. Save the installer file (`OllamaSetup.exe`) to your Downloads folder
 
-> 📸 **Screenshot needed:** Ollama.com homepage with the Download for Windows button visible
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Ollama.com homepage with the Download for Windows button visible
 
 ---
 
@@ -315,7 +318,10 @@ Three deployment architectures were fully implemented and tested before committi
 4. The installer will run silently — no prompts or wizard screens
 5. When complete, the Ollama icon will appear in your system tray (bottom right of taskbar)
 
-> 📸 **Screenshot needed:** Windows taskbar system tray showing the Ollama icon after installation completes
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Windows taskbar system tray showing the Ollama icon after installation completes
 
 ---
 
@@ -330,7 +336,10 @@ ollama --version
 
 3. You should see the version number returned (e.g., `ollama version 0.14.0`)
 
-> 📸 **Screenshot needed:** Command Prompt window showing `ollama --version` command and the version output confirming 0.14.0
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Command Prompt window showing `ollama --version` command and the version output confirming 0.14.0
 
 ---
 
@@ -351,7 +360,10 @@ ollama serve
 
 If the service is already running, this returns an address-in-use message — which confirms it is active.
 
-> 📸 **Screenshot needed:** Task Manager → Services tab with Ollama service visible and status showing Running
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Task Manager → Services tab with Ollama service visible and status showing Running
 
 ---
 
@@ -365,7 +377,10 @@ ollama pull qwen3:32b
 
 Ollama will display a progress bar showing download status. The 20GB download will take several minutes to hours depending on connection speed.
 
-> 📸 **Screenshot needed:** Command Prompt showing `ollama pull qwen3:32b` actively downloading with the progress bar, file size, and download speed visible
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Command Prompt showing `ollama pull qwen3:32b` actively downloading with the progress bar, file size, and download speed visible
 
 ---
 
@@ -379,7 +394,10 @@ ollama list
 
 You should see `qwen3:32b` listed with its size and the date it was pulled.
 
-> 📸 **Screenshot needed:** Command Prompt showing `ollama list` output with `qwen3:32b` appearing in the model list with size and date
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Command Prompt showing `ollama list` output with `qwen3:32b` appearing in the model list with size and date
 
 ---
 
@@ -393,7 +411,10 @@ ollama run qwen3:32b "What is the MITRE ATT&CK framework?"
 
 The model will load and begin generating a response token by token in the terminal.
 
-> 📸 **Screenshot needed:** Command Prompt showing `ollama run qwen3:32b` with a response actively generating in the terminal window
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Command Prompt showing `ollama run qwen3:32b` with a response actively generating in the terminal window
 
 ---
 
@@ -406,7 +427,10 @@ While the model is running (or immediately after), check GPU utilization:
 3. Click **GPU** in the left panel
 4. Confirm the **Dedicated GPU Memory** (VRAM) graph shows a spike during inference
 
-> 📸 **Screenshot needed:** Task Manager → Performance → GPU panel showing VRAM utilization spike while the model is actively running inference
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Task Manager → Performance → GPU panel showing VRAM utilization spike while the model is actively running inference
 
 ---
 
@@ -424,7 +448,10 @@ ollama pull ALIENTELLIGENCE/cybersecuritythreatanalysisv2
 ollama pull jimscard/blackhat-hacker:v2
 ```
 
-> 📸 **Screenshot needed:** Command Prompt showing `ollama list` with all 8 models present after all pulls complete, displaying names, sizes, and dates
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Command Prompt showing `ollama list` with all 8 models present after all pulls complete, displaying names, sizes, and dates
 
 ---
 
@@ -437,7 +464,10 @@ ollama pull jimscard/blackhat-hacker:v2
 3. Select the **Windows** installer
 4. Save `AnythingLLMDesktop.exe` to your Downloads folder
 
-> 📸 **Screenshot needed:** AnythingLLM.com download page with the Windows desktop installer option visible
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM.com download page with the Windows desktop installer option visible
 
 ---
 
@@ -451,7 +481,10 @@ ollama pull jimscard/blackhat-hacker:v2
 6. Click **Install**
 7. Click **Finish** when complete — AnythingLLM will launch automatically
 
-> 📸 **Screenshot needed:** AnythingLLM installer wizard open showing the installation progress screen
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM installer wizard open showing the installation progress screen
 
 ---
 
@@ -469,9 +502,15 @@ On first launch, AnythingLLM runs a setup wizard:
 5. Click **Next** through any remaining wizard screens
 6. Click **Finish** or **Complete Setup**
 
-> 📸 **Screenshot needed:** AnythingLLM first-launch wizard showing the LLM Provider selection screen with Ollama highlighted
 
-> 📸 **Screenshot needed:** AnythingLLM wizard showing the Ollama Base URL field with `http://localhost:11434` entered and the model dropdown populated with your local models
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM first-launch wizard showing the LLM Provider selection screen with Ollama highlighted
+
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM wizard showing the Ollama Base URL field with `http://localhost:11434` entered and the model dropdown populated with your local models
 
 ---
 
@@ -483,7 +522,10 @@ After setup completes:
 2. Scroll to **About** or look for the version number at the bottom of the Settings panel
 3. Confirm version **v1.8.4** or newer
 
-> 📸 **Screenshot needed:** AnythingLLM Settings panel showing the version number confirming v1.8.4
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Settings panel showing the version number confirming v1.8.4
 
 ---
 
@@ -494,7 +536,10 @@ After setup completes:
 3. Confirm the Base URL shows `http://localhost:11434`
 4. Confirm the model dropdown shows your local models
 
-> 📸 **Screenshot needed:** AnythingLLM Settings → AI Providers → LLM Provider screen showing Ollama selected, the localhost URL, and the model list populated
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Settings → AI Providers → LLM Provider screen showing Ollama selected, the localhost URL, and the model list populated
 
 ---
 
@@ -505,7 +550,10 @@ After setup completes:
 3. Press Enter or click **Create**
 4. The workspace opens and is ready for use
 
-> 📸 **Screenshot needed:** AnythingLLM main screen showing the New Workspace creation prompt with a name being entered
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM main screen showing the New Workspace creation prompt with a name being entered
 
 ---
 
@@ -518,7 +566,10 @@ In the General workspace:
 3. Press Enter
 4. The model should respond confirming it is `qwen3:32b` running via Ollama
 
-> 📸 **Screenshot needed:** AnythingLLM chat window showing the test message sent and a response from the model confirming local operation
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM chat window showing the test message sent and a response from the model confirming local operation
 
 ---
 
@@ -533,11 +584,20 @@ Repeat the workspace creation process for each analytical role:
 5. Go to the **Prompt** tab → paste in the system prompt
 6. Click **Save**
 
-> 📸 **Screenshot needed:** AnythingLLM sidebar showing all workspaces created (General, Threat Intelligence, Code Review, Red Team, Attack Chain, Deep Analysis)
 
-> 📸 **Screenshot needed:** Workspace settings panel open showing the Chat Settings tab with a model selected from the dropdown
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM sidebar showing all workspaces created (General, Threat Intelligence, Code Review, Red Team, Attack Chain, Deep Analysis)
 
-> 📸 **Screenshot needed:** Workspace settings panel open showing the Prompt tab with a system prompt entered in the field
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Workspace settings panel open showing the Chat Settings tab with a model selected from the dropdown
+
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Workspace settings panel open showing the Prompt tab with a system prompt entered in the field
 
 ---
 
@@ -670,7 +730,10 @@ Verify your version after install:
 - Click the gear icon (bottom left) → **About**
 - Confirm version is **v1.8.4** or newer
 
-> 📸 **Screenshot needed:** AnythingLLM About screen showing version v1.8.4
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM About screen showing version v1.8.4
 
 ---
 
@@ -690,7 +753,10 @@ AnythingLLM supports many LLM backends (OpenAI, Anthropic, Gemini, etc.). For lo
 
 AnythingLLM will connect to your local Ollama instance and automatically populate the model list with every model you have pulled. If you don't see your models, verify Ollama is running (`ollama list` in a terminal confirms the service is active).
 
-> 📸 **Screenshot needed:** AnythingLLM Settings → AI Providers → LLM Provider screen showing Ollama selected as provider with `http://localhost:11434` entered in the Base URL field
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Settings → AI Providers → LLM Provider screen showing Ollama selected as provider with `http://localhost:11434` entered in the Base URL field
 
 ---
 
@@ -703,7 +769,10 @@ After connecting Ollama, you assign a default model at the system level. This is
 3. For this deployment, the default is set to `qwen3:32b` — the daily-use workhorse
 4. Click **Save**
 
-> 📸 **Screenshot needed:** AnythingLLM model selection dropdown open showing the full list of available Ollama models with `qwen3:32b` selected
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM model selection dropdown open showing the full list of available Ollama models with `qwen3:32b` selected
 
 ---
 
@@ -735,7 +804,10 @@ Repeat for each analytical role you need covered. The workspaces used in this de
 | Deep Analysis | `llama3.1:70b-instruct-q4_K_M` | Long documents, complex reasoning tasks |
 | General | `qwen3:32b` | Documentation, drafting, general analysis |
 
-> 📸 **Screenshot needed:** AnythingLLM main sidebar showing all workspaces listed (Threat Intelligence, Code Review, Red Team, Attack Chain, Deep Analysis, General)
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM main sidebar showing all workspaces listed (Threat Intelligence, Code Review, Red Team, Attack Chain, Deep Analysis, General)
 
 ---
 
@@ -751,7 +823,10 @@ Each workspace can override the system default and use a specific model.
 
 The workspace will now always use that model for every chat session within it, regardless of the system default.
 
-> 📸 **Screenshot needed:** AnythingLLM workspace settings panel showing the Chat Settings or LLM Configuration tab with a specific model selected in the model dropdown (e.g., Threat Intelligence workspace showing `ALIENTELLIGENCE/cybersecuritythreatanalysisv2`)
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM workspace settings panel showing the Chat Settings or LLM Configuration tab with a specific model selected in the model dropdown (e.g., Threat Intelligence workspace showing `ALIENTELLIGENCE/cybersecuritythreatanalysisv2`)
 
 ---
 
@@ -778,7 +853,10 @@ recommended mitigations. Format analytical outputs with clear section headers.
 Prioritize operational relevance over theoretical discussion.
 ```
 
-> 📸 **Screenshot needed:** AnythingLLM workspace settings → Prompt tab showing the system prompt field populated with the Threat Intelligence prompt above
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM workspace settings → Prompt tab showing the system prompt field populated with the Threat Intelligence prompt above
 
 **Example system prompt — Red Team workspace:**
 
@@ -851,7 +929,10 @@ deepseek-r1:32b                                         edba8017331d    19 GB   
 
 The output shows: model name and tag, model ID hash, size on disk, and when it was last modified (pulled or updated).
 
-> 📸 **Screenshot needed:** Terminal window showing the full output of `ollama list` displaying all 8 deployed models with sizes and modified dates
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Terminal window showing the full output of `ollama list` displaying all 8 deployed models with sizes and modified dates
 
 ---
 
@@ -865,7 +946,10 @@ ollama serve
 
 If Ollama is already running as a service, this will return a message indicating the address is already in use — which confirms it is active. You can also check Task Manager → Services and look for the Ollama process.
 
-> 📸 **Screenshot needed:** Terminal showing Ollama serve response confirming the service is running, OR Task Manager → Services tab with the Ollama service visible and status showing Running
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Terminal showing Ollama serve response confirming the service is running, OR Task Manager → Services tab with the Ollama service visible and status showing Running
 
 ---
 
@@ -887,7 +971,10 @@ ollama pull ALIENTELLIGENCE/cybersecuritythreatanalysisv2
 
 Ollama will show a download progress bar. Large models (18–42GB) will take significant time depending on your connection speed. Downloads resume automatically if interrupted.
 
-> 📸 **Screenshot needed:** Terminal window showing an active `ollama pull` download with the progress bar, percentage, and download speed visible
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Terminal window showing an active `ollama pull` download with the progress bar, percentage, and download speed visible
 
 ---
 
@@ -903,7 +990,10 @@ If the model is already at the latest version, Ollama will confirm this and skip
 
 **To update all models in one pass**, run a pull on each model in your library sequentially. There is no single `ollama update --all` command — each model must be pulled individually.
 
-> 📸 **Screenshot needed:** Terminal showing `ollama pull` on an already-current model confirming "up to date" with no download, OR showing a version update downloading
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Terminal showing `ollama pull` on an already-current model confirming "up to date" with no download, OR showing a version update downloading
 
 ---
 
@@ -923,7 +1013,10 @@ ollama rm phi4-reasoning:14b
 
 Confirm removal with `ollama list` afterward.
 
-> 📸 **Screenshot needed:** Terminal showing `ollama rm` command completing successfully, followed by `ollama list` output confirming the model is no longer present
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Terminal showing `ollama rm` command completing successfully, followed by `ollama list` output confirming the model is no longer present
 
 ---
 
@@ -943,7 +1036,10 @@ ollama run qwen3:32b "List three common lateral movement techniques used in APT 
 
 This runs an inference pass directly in the terminal. Watch Task Manager → GPU Performance during the run to confirm VRAM is being utilized. A working model will show VRAM utilization spike within a few seconds of the command executing.
 
-> 📸 **Screenshot needed:** Split view or two screenshots — (1) terminal showing `ollama run qwen3:32b` with a response generating, and (2) Task Manager GPU tab showing VRAM utilization spike during that same run
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> Split view or two screenshots — (1) terminal showing `ollama run qwen3:32b` with a response generating, and (2) Task Manager GPU tab showing VRAM utilization spike during that same run
 
 ---
 
@@ -1102,7 +1198,10 @@ timeline. Format with clear section headers.
 - Exploitation likelihood assessment with rationale
 - Prioritized mitigation recommendations with timeline
 
-> 📸 **Screenshot needed:** AnythingLLM Threat Intelligence workspace showing the CISA alert prompt submitted and the structured analysis response generated by the cybersecurity model
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Threat Intelligence workspace showing the CISA alert prompt submitted and the structured analysis response generated by the cybersecurity model
 
 ---
 
@@ -1126,7 +1225,10 @@ with line references, (3) indicators of compromise this script would leave,
 [Suspicious script pasted here]
 ```
 
-> 📸 **Screenshot needed:** AnythingLLM Code Review workspace showing a suspicious script submitted and the model's line-by-line malicious functionality analysis
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Code Review workspace showing a suspicious script submitted and the model's line-by-line malicious functionality analysis
 
 ---
 
@@ -1152,7 +1254,10 @@ or refute your reconstruction.
 [Alert log data pasted here]
 ```
 
-> 📸 **Screenshot needed:** AnythingLLM Attack Chain workspace showing alert data submitted and the R1 model's step-by-step reasoning chain and attack reconstruction output
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Attack Chain workspace showing alert data submitted and the R1 model's step-by-step reasoning chain and attack reconstruction output
 
 ---
 
@@ -1177,7 +1282,10 @@ Prioritize paths by likelihood of success, not by impact.
 [Network architecture description pasted here]
 ```
 
-> 📸 **Screenshot needed:** AnythingLLM Red Team workspace showing the architecture description submitted and the adversarial analysis output with prioritized attack paths
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Red Team workspace showing the architecture description submitted and the adversarial analysis output with prioritized attack paths
 
 ---
 
@@ -1442,7 +1550,10 @@ active exploitation in the wild targeting critical infrastructure sectors.
 - Exploitation likelihood assessment
 - Prioritized mitigation steps
 
-> 📸 **Screenshot needed:** AnythingLLM Threat Intelligence workspace showing a CISA alert pasted as input and the model's structured analytical response
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Threat Intelligence workspace showing a CISA alert pasted as input and the model's structured analytical response
 
 **What this demonstrates:** The system prompt eliminates the need to re-explain analytical framework at the start of every session. The model behaves as a trained threat analyst from the first token of every response.
 
@@ -1470,7 +1581,10 @@ subprocess.call(["/bin/sh", "-i"])
 
 **Step 3:** The model identifies this as a reverse shell, explains the socket connection mechanism, identifies the hardcoded C2 IP and port, explains what `dup2` does in this context, and assesses the capability and likely intent.
 
-> 📸 **Screenshot needed:** AnythingLLM Code Review workspace showing malicious code submitted and the model's vulnerability/capability breakdown response
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Code Review workspace showing malicious code submitted and the model's vulnerability/capability breakdown response
 
 **What this demonstrates:** Sensitive code — potentially from an active incident — never leaves the local machine. A cloud-based tool would transmit this code to external servers, creating chain-of-custody and classification concerns.
 
@@ -1498,7 +1612,10 @@ T+48:00 - Large data transfer to external destination
 
 **Step 3:** The R1 model works through the chain step by step — showing its reasoning at each stage — and maps the sequence to a complete attack lifecycle: initial access → execution → credential access → lateral movement → persistence → exfiltration.
 
-> 📸 **Screenshot needed:** AnythingLLM Attack Chain workspace showing the event timeline submitted and the model's step-by-step campaign reconstruction with MITRE ATT&CK stage mapping
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Attack Chain workspace showing the event timeline submitted and the model's step-by-step campaign reconstruction with MITRE ATT&CK stage mapping
 
 **What this demonstrates:** The R1 model's chain-of-thought reasoning is visible in the output — the analyst can follow the logic and identify where the model's assessment differs from their own, rather than just receiving a black-box conclusion.
 
@@ -1523,7 +1640,10 @@ Patch status: 30 days behind current
 
 **Step 3:** The model responds from an attacker's perspective — enumerating the most likely exploitation paths, prioritizing by ease of exploitation and potential impact, and identifying the configuration details that represent the greatest risk.
 
-> 📸 **Screenshot needed:** AnythingLLM Red Team workspace showing a network configuration submitted and the model's adversarial assessment response
+
+---
+> ## 📸 SCREENSHOT NEEDED
+> AnythingLLM Red Team workspace showing a network configuration submitted and the model's adversarial assessment response
 
 ---
 
