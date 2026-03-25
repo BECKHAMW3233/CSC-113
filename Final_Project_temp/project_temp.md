@@ -287,10 +287,20 @@ Three deployment architectures were fully implemented and tested before committi
 
 ### Prerequisites
 
-- Windows 10/11 Pro (64-bit)
-- NVIDIA GPU with current drivers (CUDA 11.8+ recommended)
-- 16GB+ VRAM for the model sizes used here
-- Sufficient disk space (~25–50GB per large model; 150GB+ for the full library)
+| Component | Minimum | Nominal | Preferred |
+|---|---|---|---|
+| OS | Windows 10 64-bit | Windows 11 Pro 64-bit | Windows 11 Pro 64-bit (latest build) |
+| CPU | 6-core / 12-thread | 8-core / 16-thread | 12-core / 24-thread or better |
+| System RAM | 16GB | 32GB | 64GB+ |
+| GPU VRAM | 8GB | 12GB | 16GB+ |
+| GPU | Any NVIDIA with CUDA support | RTX 3070 / 3080 class | RTX 4080 / 4090 class |
+| Disk Space | 50GB free | 100GB free | 200GB+ dedicated storage |
+| CUDA Version | 11.8 | 12.0 | 12.4+ |
+
+**Tier notes:**
+- **Minimum** — runs 7B models reliably, 13B models slowly, anything larger will struggle or fail
+- **Nominal** — runs 13B–20B models well, 32B models at reduced speed with system RAM offload
+- **Preferred** — runs the full model library in this deployment including 32B class at 3–5 tokens/second and 70B with partial offload
 
 ---
 
