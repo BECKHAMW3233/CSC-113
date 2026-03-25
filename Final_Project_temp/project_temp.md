@@ -1,8 +1,9 @@
 # Local AI Infrastructure for Federal Cybersecurity Operations
 
 **William Edward Beckham III**
-Systems Security & Analysis — Fayetteville Technical Community College
-CSC-113: AI-Enhanced Workflows & Prompt Engineering | Spring 2026
+Fayetteville Technical Community College
+Artificial Intelligence Fundamentals — CSC-113-0901 | Spring 2026
+Instructor: Andrew Norris | Class Dates: January 12 – May 13, 2026
 
 ---
 
@@ -10,11 +11,34 @@ CSC-113: AI-Enhanced Workflows & Prompt Engineering | Spring 2026
 
 This project documents the design, testing, and deployment of a fully local AI infrastructure built for sensitive cybersecurity analysis work. The goal was to create a production-ready system capable of running large language models entirely on local hardware — no cloud, no external API calls, no data leaving the machine.
 
-The motivating problem is real: federal cybersecurity roles at installations like Fort Liberty regularly involve analyzing threat intelligence, malware samples, and network traffic that cannot be transmitted to commercial cloud AI services like ChatGPT or Gemini due to data sovereignty and classification requirements. This system closes that gap.
+The motivating problem is real: federal cybersecurity roles at installations like Fort Bragg regularly involve analyzing threat intelligence, malware samples, and network traffic that cannot be transmitted to commercial cloud AI services like ChatGPT or Gemini due to data sovereignty and classification requirements. This system closes that gap.
 
 ---
 
-## Origin Story
+## Course Context
+
+This project was developed as the final capstone for CSC-113-0901 Artificial Intelligence Fundamentals at Fayetteville Technical Community College, progressing through the course module structure from initial ideation to final AI Showcase presentation.
+
+**Relevant course outcomes this project addresses:**
+
+- *Understand the fundamentals of AI and ML, including their history and development* — documented through the origin story, model library rationale, and deployment architecture comparison
+- *Learn general techniques to use generative AI tools across different areas of investigation* — demonstrated through task-specific model routing across threat intelligence, code review, red team analysis, and documentation workflows
+- *Develop critical skills to evaluate and select suitable AI tools for specific tasks* — evidenced by the cloud vs. local comparative test (January 24, 2026) and the model selection process documented with Claude AI assistance
+- *Develop a practical semester project using AI* — this infrastructure is a fully operational production deployment, not a theoretical proposal
+
+**Module progression:**
+
+| Module | Topic | How This Project Relates |
+|---|---|---|
+| Module 4 | Find Your Project | Local AI infrastructure selected as final project |
+| Module 5 | Design Your Project | Architecture decisions and model selection documented |
+| Module 6 | Project: Sprint 1 | Core deployment — Ollama native Windows installation, model library |
+| Module 7 | Project: Sprint 2 | AnythingLLM integration, workspace configuration, system prompts |
+| Module 8 | Project: The Payoff | AI Showcase — full documentation and live demonstration |
+
+---
+
+
 
 This project didn't start with a plan. In May 2025, I discovered Ollama while exploring what was possible with the hardware I already owned. I was curious whether I could run AI models locally, completely disconnected from cloud services. Within days of pulling my first model, I found I genuinely enjoyed it. What started as tinkering quickly became a serious side project.
 
@@ -408,7 +432,7 @@ ollama pull jimscard/blackhat-hacker:v2
 
 ### Step 1: Download the AnythingLLM Installer
 
-1. Open your browser and navigate to [anythingllm.com](https://anythingllm.com)
+1. Open your browser and navigate to [anythingllm.com/desktop](https://anythingllm.com/desktop)
 2. Click **Download for Desktop**
 3. Select the **Windows** installer
 4. Save `AnythingLLMDesktop.exe` to your Downloads folder
@@ -1773,8 +1797,10 @@ Memory on the GPU used to store model weights during inference. VRAM is faster t
 
 ## References
 
-- [Ollama Documentation](https://ollama.com)
-- [AnythingLLM Documentation](https://anythingllm.com)
+- [Ollama Documentation](https://docs.ollama.com)
+- [Ollama Windows Download](https://ollama.com/download/windows)
+- [AnythingLLM Desktop Download](https://anythingllm.com/desktop)
+- [AnythingLLM Documentation](https://docs.anythingllm.com)
 - [MITRE ATT&CK Framework](https://attack.mitre.org)
 - [CISA Alerts and Advisories](https://www.cisa.gov/news-events/cybersecurity-advisories)
 - [NVD CVE Database](https://nvd.nist.gov)
