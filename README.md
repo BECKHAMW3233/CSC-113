@@ -167,6 +167,7 @@ CSC-113/
 
 * 🎓 FTCC Student - Systems Security & Analysis
 * 💼 GitHub: [BECKHAMW3233](https://github.com/BECKHAMW3233)
+* 💼 LinkedIn: [linkedin.com/in/WilliamBeckham](https://linkedin.com/in/WilliamBeckham)
 * 📫 Course: CSC-113-0901 (Spring 2026 Online)
 * 🎯 Target Role: GS-11/12 Federal Cybersecurity Analyst
 
