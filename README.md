@@ -163,19 +163,6 @@ CSC-113/
 
 ---
 
-## Academic Performance
-
-**Current Standing:** 99.5% overall grade  
-**Status:** All assignments completed on or ahead of schedule  
-
-**Key Achievements:**
-* Completed course module work 5-6 weeks ahead of schedule
-* Maintained high-quality work while moving at accelerated pace
-* Built production-ready infrastructure alongside coursework
-* Integrated real-world federal cybersecurity requirements into academic projects
-
----
-
 ## Connect
 
 * 🎓 FTCC Student - Systems Security & Analysis
