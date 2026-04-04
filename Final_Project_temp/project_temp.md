@@ -324,8 +324,8 @@ Three deployment architectures were fully implemented and tested before committi
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> Ollama.com homepage with the Download for Windows button visible
+<img width="1718" height="1333" alt="image" src="https://github.com/user-attachments/assets/740ddb7a-cc97-420b-9af2-45ae042a8fdc" />
+
 
 ---
 
@@ -339,8 +339,8 @@ Three deployment architectures were fully implemented and tested before committi
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> Windows taskbar system tray showing the Ollama icon after installation completes
+<img width="1723" height="1333" alt="image" src="https://github.com/user-attachments/assets/a382ff96-2832-493e-8419-be211333ed22" />
+
 
 ---
 
@@ -357,8 +357,8 @@ ollama --version
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> Command Prompt window showing `ollama --version` command and the version output confirming 0.14.0
+<img width="1719" height="1335" alt="image" src="https://github.com/user-attachments/assets/96a87ca4-2a2b-4c18-b4cf-3d4bfe4e8335" />
+
 
 ---
 
@@ -381,8 +381,8 @@ If the service is already running, this returns an address-in-use message — wh
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> Task Manager → Services tab with Ollama service visible and status showing Running
+<img width="1725" height="1336" alt="image" src="https://github.com/user-attachments/assets/66dc1978-95a4-4737-bd75-cc26d5cc02e6" />
+
 
 ---
 
@@ -398,8 +398,7 @@ Ollama will display a progress bar showing download status. The 20GB download wi
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> Command Prompt showing `ollama pull qwen3:32b` actively downloading with the progress bar, file size, and download speed visible
+<img width="1717" height="1336" alt="image" src="https://github.com/user-attachments/assets/bfe274f9-8676-435d-a19d-1b7a2f1a7396" />
 
 ---
 
@@ -415,8 +414,8 @@ You should see `qwen3:32b` listed with its size and the date it was pulled.
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> Command Prompt showing `ollama list` output with `qwen3:32b` appearing in the model list with size and date
+<img width="1726" height="1339" alt="image" src="https://github.com/user-attachments/assets/bb45ef3b-a8f4-41bc-80d4-d0bbfb9296c0" />
+
 
 ---
 
@@ -432,8 +431,8 @@ The model will load and begin generating a response token by token in the termin
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> Command Prompt showing `ollama run qwen3:32b` with a response actively generating in the terminal window
+<img width="1713" height="1339" alt="image" src="https://github.com/user-attachments/assets/ab95f09f-fb45-4175-9b8f-10af76587d16" />
+
 
 ---
 
@@ -485,8 +484,7 @@ ollama pull jimscard/blackhat-hacker:v2
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM.com download page with the Windows desktop installer option visible
+<img width="1718" height="1328" alt="image" src="https://github.com/user-attachments/assets/18059cd1-de0c-41f5-a7d2-847511ddc66a" />
 
 ---
 
@@ -502,8 +500,8 @@ ollama pull jimscard/blackhat-hacker:v2
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM installer wizard open showing the installation progress screen
+<img width="1722" height="1339" alt="image" src="https://github.com/user-attachments/assets/1c86af20-606e-4c50-b7dc-cf2672b140be" />
+
 
 ---
 
@@ -523,8 +521,7 @@ On first launch, AnythingLLM runs a setup wizard:
 
 
 ---
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM first-launch wizard showing the LLM Provider selection screen with Ollama highlighted
+<img width="1719" height="1337" alt="image" src="https://github.com/user-attachments/assets/fb62a6f7-efc0-40d0-a192-692f3165b6c8" />
 
 
 ---
