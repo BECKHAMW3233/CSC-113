@@ -87,8 +87,8 @@ The RTX 4080's 16GB VRAM fits the 32B–33B model class that represents the best
 
 | Layer | Tool | Version |
 |---|---|---|
-| Model runtime | Ollama | v0.14.0 |
-| Chat interface | AnythingLLM | v1.8.4 |
+| Model runtime | Ollama | v0.21.2 |
+| Chat interface | AnythingLLM | v1.10.0 |
 | OS | Windows 11 Pro | Build 26200.7623 |
 
 **Ollama** manages model downloads, versioning, and the local REST API that applications use to query models.
@@ -224,8 +224,6 @@ Testing confirmed the recommendation — on threat intelligence prompts, this mo
 
 ---
 
----
-
 ## Task Routing
 
 A core design decision in this system is not using a single model for everything. Each analytical task is routed to the model best suited for it:
@@ -240,6 +238,19 @@ A core design decision in this system is not using a single model for everything
 | General analysis and documentation | `qwen3:32b` |
 
 This approach mirrors how a real SOC team operates — different analysts with different specializations handle different problem types. The model library reflects that same division of responsibility.
+
+---
+
+## Installation and Setup
+
+For installation and configuration procedures, refer to the official documentation:
+
+- **Ollama Installation:** [https://ollama.com](https://ollama.com) — Download and setup guides for Windows, macOS, and Linux
+- **Ollama Documentation:** [https://docs.ollama.com](https://docs.ollama.com) — Model management, API usage, and configuration
+- **AnythingLLM Download:** [https://anythingllm.com](https://anythingllm.com) — Desktop application installer
+- **AnythingLLM Documentation:** [https://docs.anythingllm.com](https://docs.anythingllm.com) — Workspace setup, LLM provider configuration, and RAG implementation
+
+This deployment uses Ollama v0.21.2 as the model runtime and AnythingLLM v1.10.0 as the workspace interface, both running natively on Windows 11 Pro.
 
 ---
 
@@ -280,350 +291,9 @@ Three deployment architectures were fully implemented and tested before committi
 
 ---
 
-## Installation: Native Windows Deployment
-
-> This documents the production deployment path. Docker and WSL paths were tested and documented separately during the architecture evaluation phase.
-
-### Prerequisites
-
-| Component | Minimum | Recommended | Optimal | Commercial / Enterprise |
-|---|---|---|---|---|
-| OS | Windows 10 64-bit | Windows 11 Pro 64-bit | Windows 11 Pro 64-bit (latest build) | Windows 11 Pro / Server 2025 / Linux |
-| CPU | 6-core / 12-thread | 8-core / 16-thread | 12-core / 24-thread or better | AMD Threadripper PRO 9995WX (96-core / 192-thread) or Intel Xeon W class |
-| System RAM | 16GB | 32GB | 64GB+ | 256GB – 2TB DDR5 ECC (8-channel) |
-| GPU VRAM | 4GB | 12GB | 24GB–32GB | 96GB (NVIDIA RTX PRO 6000 Blackwell) |
-| GPU | Any NVIDIA with CUDA support | RTX 4070 / 4080 class | RTX 5080 (16GB GDDR7) / RTX 5090 (32GB GDDR7) | NVIDIA RTX PRO 6000 Blackwell Workstation / Server Edition |
-| Storage Type | SATA SSD | NVMe M.2 SSD | NVMe M.2 SSD (PCIe Gen 4) | NVMe M.2 PCIe Gen 5 / Enterprise NVMe RAID |
-| Disk Space | 50GB free | 100GB free | 200GB+ dedicated storage | 1TB+ dedicated AI model storage |
-| CUDA Version | 11.8 | 12.0 | 12.4+ | 12.4+ |
-| **Estimated Build Cost** | **$400 – $800** | **$1,500 – $2,500** | **$4,000 – $8,000+** | **$15,000 – $30,000+** |
-
-> **Estimated build cost notes (March 2026):**
-> - **Minimum ($400–$800):** Represents an older mid-range system or budget build. GPU alone in this tier (4GB VRAM) costs $100–$200 used. Functional but not a viable deployment platform for serious work.
-> - **Recommended ($1,500–$2,500):** A capable mid-range build with an RTX 4070 class GPU (~$400–$600 used, $500–$700 new), 32GB RAM, NVMe storage, and a modern mid-range CPU. Represents a solid entry point for practical local AI work.
-> - **Optimal ($4,000–$8,000+):** RTX 5090 alone is currently $3,000–$4,500+ due to GDDR7 supply shortages as of March 2026 (MSRP $1,999 but rarely available at that price). RTX 5080 is more accessible at $999–$1,500. This deployment (RTX 4080 + Ryzen 9 7900X + 64GB DDR5) was built for gaming and sits in this tier at approximately $3,500–$4,500 total system cost.
-> - **Commercial / Enterprise ($15,000–$30,000+):** AMD Threadripper PRO 9995WX CPU alone is approximately $11,699. The RTX PRO 6000 Blackwell GPU is $8,500–$9,200. A fully configured workstation with 256GB+ ECC RAM, enterprise NVMe storage, and a professional chassis easily reaches $25,000–$35,000 or more.
-
-**Tier notes:**
-- **Minimum (4GB VRAM)** — Technically Ollama will load and run, but this should not be considered a viable deployment configuration. At 4GB VRAM virtually all model layers offload to system RAM, response times become impractical, and models capable of real analytical work will not fit. This tier exists to acknowledge the technical floor, not to recommend it.
-- **Recommended** — runs 13B–20B models well, 32B models at reduced speed with system RAM offload
-- **Optimal** — runs the full model library in this deployment including 32B class at 3–5 tokens/second and 70B with partial offload
-- **Commercial / Enterprise** — the NVIDIA RTX PRO 6000 Blackwell's 96GB of GDDR7 VRAM fits 70B models entirely in VRAM at FP8 quality with significant headroom remaining, eliminating system RAM offload entirely for the largest practical models. Paired with the AMD Threadripper PRO 9995WX (96 cores / 192 threads, up to 2TB DDR5 ECC on the WRX90 platform), this configuration handles multiple simultaneous large model instances, fine-tuning workloads, and inference at production scale — far beyond the needs of a single analyst workstation. This tier represents what a federal SOC or AI-enabled operations center would deploy, not a personal infrastructure build.
-- **Storage** — NVMe M.2 is strongly recommended for both the Ollama installation and the model library. Model files range from 4GB to 42GB and must be read from disk into VRAM/RAM at load time. An NVMe M.2 drive — particularly PCIe Gen 4 or Gen 5 — dramatically reduces model load times compared to a SATA SSD and makes HDD storage impractical for this use case. Store both the Ollama application and the model directory on the same NVMe drive for best results.
-
----
-
-## Part 1: Installing Ollama
-
-### Step 1: Download the Ollama Installer
-
-1. Open your browser and navigate to [ollama.com](https://ollama.com)
-2. Click the **Download** button on the homepage
-3. Select **Download for Windows**
-4. Save the installer file (`OllamaSetup.exe`) to your Downloads folder
-
-
----
-<img width="1718" height="1333" alt="image" src="https://github.com/user-attachments/assets/740ddb7a-cc97-420b-9af2-45ae042a8fdc" />
-
-
----
-
-### Step 2: Run the Installer
-
-1. Navigate to your Downloads folder
-2. Double-click `OllamaSetup.exe`
-3. If Windows Defender SmartScreen appears, click **More info** → **Run anyway**
-4. The installer will run silently — no prompts or wizard screens
-5. When complete, the Ollama icon will appear in your system tray (bottom right of taskbar)
-
-
----
-<img width="1723" height="1333" alt="image" src="https://github.com/user-attachments/assets/a382ff96-2832-493e-8419-be211333ed22" />
-
-
----
-
-### Step 3: Verify Ollama Installed Correctly
-
-1. Press `Windows + R`, type `cmd`, press Enter to open Command Prompt
-2. Type the following and press Enter:
-
-```
-ollama --version
-```
-
-3. You should see the version number returned (e.g., `ollama version 0.14.0`)
-
-
----
-<img width="1719" height="1335" alt="image" src="https://github.com/user-attachments/assets/96a87ca4-2a2b-4c18-b4cf-3d4bfe4e8335" />
-
-
----
-
-### Step 4: Verify Ollama Service is Running
-
-Ollama installs as a background Windows service that starts automatically. Confirm it is active:
-
-1. Press `Ctrl + Shift + Esc` to open Task Manager
-2. Click the **Services** tab
-3. Scroll to find **Ollama** in the list
-4. Confirm the status column shows **Running**
-
-Alternatively, in Command Prompt:
-
-```
-ollama serve
-```
-
-If the service is already running, this returns an address-in-use message — which confirms it is active.
-
-
----
-<img width="1725" height="1336" alt="image" src="https://github.com/user-attachments/assets/66dc1978-95a4-4737-bd75-cc26d5cc02e6" />
-
-
----
-
-### Step 5: Pull Your First Model
-
-With Ollama running, download your first model. Start with the primary workhorse:
-
-```
-ollama pull qwen3:32b
-```
-
-Ollama will display a progress bar showing download status. The 20GB download will take several minutes to hours depending on connection speed.
-
-
----
-<img width="1717" height="1336" alt="image" src="https://github.com/user-attachments/assets/bfe274f9-8676-435d-a19d-1b7a2f1a7396" />
-
----
-
-### Step 6: Confirm the Model Downloaded Successfully
-
-When the download completes, verify it is in your library:
-
-```
-ollama list
-```
-
-You should see `qwen3:32b` listed with its size and the date it was pulled.
-
-
----
-<img width="1726" height="1339" alt="image" src="https://github.com/user-attachments/assets/bb45ef3b-a8f4-41bc-80d4-d0bbfb9296c0" />
-
-
----
-
-### Step 7: Run a Quick Test in the Terminal
-
-Before setting up AnythingLLM, confirm the model works by running a direct query:
-
-```
-ollama run qwen3:32b "What is the MITRE ATT&CK framework?"
-```
-
-The model will load and begin generating a response token by token in the terminal.
-
-
----
-<img width="1713" height="1339" alt="image" src="https://github.com/user-attachments/assets/ab95f09f-fb45-4175-9b8f-10af76587d16" />
-
-
----
-
-### Step 8: Verify GPU is Being Used
-
-While the model is running (or immediately after), check GPU utilization:
-
-1. Press `Ctrl + Shift + Esc` to open Task Manager
-2. Click **Performance** tab
-3. Click **GPU** in the left panel
-4. Confirm the **Dedicated GPU Memory** (VRAM) graph shows a spike during inference
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Task Manager → Performance → GPU panel showing VRAM utilization spike while the model is actively running inference
-
----
-
-### Step 9: Pull the Remaining Models
-
-Repeat the pull command for each model in the library. Run these one at a time — do not start the next pull until the current one completes:
-
-```
-ollama pull llama3.1:70b-instruct-q4_K_M
-ollama pull deepseek-r1:32b
-ollama pull deepseek-coder:33b-instruct
-ollama pull qwen3-coder:30b
-ollama pull phi4-reasoning:14b
-ollama pull ALIENTELLIGENCE/cybersecuritythreatanalysisv2
-ollama pull jimscard/blackhat-hacker:v2
-```
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Command Prompt showing `ollama list` with all 8 models present after all pulls complete, displaying names, sizes, and dates
-
----
-
-## Part 2: Installing AnythingLLM
-
-### Step 1: Download the AnythingLLM Installer
-
-1. Open your browser and navigate to [anythingllm.com/desktop](https://anythingllm.com/desktop)
-2. Click **Download for Desktop**
-3. Select the **Windows** installer
-4. Save `AnythingLLMDesktop.exe` to your Downloads folder
-
-
----
-<img width="1718" height="1328" alt="image" src="https://github.com/user-attachments/assets/18059cd1-de0c-41f5-a7d2-847511ddc66a" />
-
----
-
-### Step 2: Run the Installer
-
-1. Navigate to your Downloads folder
-2. Double-click `AnythingLLMDesktop.exe`
-3. If prompted by Windows Defender SmartScreen, click **More info** → **Run anyway**
-4. The installer wizard will open — click **Next** through the prompts
-5. Accept the default install location or choose your preferred directory
-6. Click **Install**
-7. Click **Finish** when complete — AnythingLLM will launch automatically
-
-
----
-<img width="1722" height="1339" alt="image" src="https://github.com/user-attachments/assets/1c86af20-606e-4c50-b7dc-cf2672b140be" />
-
-
----
-
-### Step 3: Complete the First-Launch Setup Wizard
-
-On first launch, AnythingLLM runs a setup wizard:
-
-1. **Welcome screen** — click **Get Started**
-2. **LLM Provider selection** — scroll the list and select **Ollama**
-3. **Ollama Base URL** — enter:
-   ```
-   http://localhost:11434
-   ```
-4. **Model selection** — select `qwen3:32b` from the dropdown (your models should auto-populate)
-5. Click **Next** through any remaining wizard screens
-6. Click **Finish** or **Complete Setup**
-
-
----
-<img width="1719" height="1337" alt="image" src="https://github.com/user-attachments/assets/fb62a6f7-efc0-40d0-a192-692f3165b6c8" />
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM wizard showing the Ollama Base URL field with `http://localhost:11434` entered and the model dropdown populated with your local models
-
----
-
-### Step 4: Verify the Version
-
-After setup completes:
-
-1. Click the **gear icon** (bottom left of the sidebar)
-2. Scroll to **About** or look for the version number at the bottom of the Settings panel
-3. Confirm version **v1.8.4** or newer
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM Settings panel showing the version number confirming v1.8.4
-
----
-
-### Step 5: Confirm Ollama Connection in Settings
-
-1. In Settings, navigate to **AI Providers → LLM Provider**
-2. Confirm **Ollama** is selected as the provider
-3. Confirm the Base URL shows `http://localhost:11434`
-4. Confirm the model dropdown shows your local models
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM Settings → AI Providers → LLM Provider screen showing Ollama selected, the localhost URL, and the model list populated
-
----
-
-### Step 6: Create Your First Workspace
-
-1. On the main screen, click **+ New Workspace** in the left sidebar
-2. Type a name — start with `General`
-3. Press Enter or click **Create**
-4. The workspace opens and is ready for use
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM main screen showing the New Workspace creation prompt with a name being entered
-
----
-
-### Step 7: Send a Test Message
-
-In the General workspace:
-
-1. Click in the message box at the bottom
-2. Type: `Confirm you are running locally and identify your model name`
-3. Press Enter
-4. The model should respond confirming it is `qwen3:32b` running via Ollama
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM chat window showing the test message sent and a response from the model confirming local operation
-
----
-
-### Step 8: Create the Remaining Workspaces
-
-Repeat the workspace creation process for each analytical role:
-
-1. Click **+ New Workspace**
-2. Name it (e.g., `Threat Intelligence`)
-3. Click the **settings icon** next to the workspace name
-4. Go to **Chat Settings** → select the assigned model from the dropdown
-5. Go to the **Prompt** tab → paste in the system prompt
-6. Click **Save**
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM sidebar showing all workspaces created (General, Threat Intelligence, Code Review, Red Team, Attack Chain, Deep Analysis)
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Workspace settings panel open showing the Chat Settings tab with a model selected from the dropdown
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Workspace settings panel open showing the Prompt tab with a system prompt entered in the field
-
----
-
-
-
----
-
 ## Performance
 
-Inference speeds vary significantly by model size. The figures below come from direct testing on the production hardware (RTX 4080 16GB) running Ollama v0.14.0 on Windows 11 Pro.
+Inference speeds vary significantly by model size. The figures below come from direct testing on the production hardware (RTX 4080 16GB) running Ollama v0.21.2 on Windows 11 Pro.
 
 | Model | Size | Measured Speed | Notes |
 |---|---|---|---|
@@ -706,69 +376,11 @@ This is the type of infrastructure that federal SOC environments need but typica
 
 ---
 
-## AnythingLLM: Full Setup and Configuration
+## AnythingLLM: Workspace Architecture
 
-AnythingLLM is the workspace interface layer that sits on top of Ollama. While Ollama handles the model runtime and inference, AnythingLLM provides everything above that — workspaces, document ingestion, conversation history, system prompt management, and per-workspace model assignment. This section documents the full configuration used in this project.
+AnythingLLM is the workspace interface layer that sits on top of Ollama. While Ollama handles the model runtime and inference, AnythingLLM provides everything above that — workspaces, document ingestion, conversation history, system prompt management, and per-workspace model assignment.
 
----
-
-### Step 1: Install AnythingLLM
-
-Download the desktop installer from [anythingllm.com](https://anythingllm.com). Run the installer — it installs as a standard Windows desktop application. When you first launch AnythingLLM, it will run an initial setup wizard.
-
-Verify your version after install:
-
-- Open AnythingLLM
-- Click the gear icon (bottom left) → **About**
-- Confirm version is **v1.8.4** or newer
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM About screen showing version v1.8.4
-
----
-
-### Step 2: Connect Ollama as the LLM Provider
-
-AnythingLLM supports many LLM backends (OpenAI, Anthropic, Gemini, etc.). For local deployment, you configure it to point at your local Ollama instance.
-
-1. Open AnythingLLM
-2. Click the **gear icon** (bottom left) to open Settings
-3. Navigate to **AI Providers → LLM Provider**
-4. From the provider dropdown, select **Ollama**
-5. In the **Ollama Base URL** field, enter:
-   ```
-   http://localhost:11434
-   ```
-6. Click **Save**
-
-AnythingLLM will connect to your local Ollama instance and automatically populate the model list with every model you have pulled. If you don't see your models, verify Ollama is running (`ollama list` in a terminal confirms the service is active).
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM Settings → AI Providers → LLM Provider screen showing Ollama selected as provider with `http://localhost:11434` entered in the Base URL field
-
----
-
-### Step 3: Set the Default Model
-
-After connecting Ollama, you assign a default model at the system level. This is the model AnythingLLM falls back to for any workspace that doesn't have a specific model override.
-
-1. In Settings → **AI Providers → LLM Provider** (same screen as above)
-2. Under **Model Selection**, choose your primary model from the dropdown
-3. For this deployment, the default is set to `qwen3:32b` — the daily-use workhorse
-4. Click **Save**
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM model selection dropdown open showing the full list of available Ollama models with `qwen3:32b` selected
-
----
-
-### Step 4: Create Workspaces
+### Workspace Design
 
 Workspaces are AnythingLLM's core organizational unit. Each workspace is an isolated environment with its own:
 
@@ -779,13 +391,7 @@ Workspaces are AnythingLLM's core organizational unit. Each workspace is an isol
 
 This is what enables the task-routing strategy — rather than manually switching models for each query, you open the workspace designed for that task and the right model and prompt are already configured.
 
-**To create a workspace:**
-
-1. On the main sidebar, click **+ New Workspace**
-2. Give it a descriptive name that reflects its purpose (e.g., `Threat Intelligence`, `Code Review`, `Red Team Analysis`)
-3. Click **Create**
-
-Repeat for each analytical role you need covered. The workspaces used in this deployment:
+The workspaces used in this deployment:
 
 | Workspace Name | Model Assigned | Purpose |
 |---|---|---|
@@ -796,43 +402,9 @@ Repeat for each analytical role you need covered. The workspaces used in this de
 | Deep Analysis | `llama3.1:70b-instruct-q4_K_M` | Long documents, complex reasoning tasks |
 | General | `qwen3:32b` | Documentation, drafting, general analysis |
 
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM main sidebar showing all workspaces listed (Threat Intelligence, Code Review, Red Team, Attack Chain, Deep Analysis, General)
-
----
-
-### Step 5: Assign a Model to Each Workspace
-
-Each workspace can override the system default and use a specific model.
-
-1. Open the workspace
-2. Click the **Settings icon** (pencil or gear icon next to the workspace name)
-3. Navigate to the **Chat Settings** or **LLM Configuration** tab
-4. Under **Model**, select the specific model for this workspace from the dropdown
-5. Click **Save** or **Update workspace**
-
-The workspace will now always use that model for every chat session within it, regardless of the system default.
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM workspace settings panel showing the Chat Settings or LLM Configuration tab with a specific model selected in the model dropdown (e.g., Threat Intelligence workspace showing `ALIENTELLIGENCE/cybersecuritythreatanalysisv2`)
-
----
-
-### Step 6: Configure System Prompts
+### System Prompts
 
 The system prompt is the persistent instruction set that shapes how the model behaves in every conversation within a workspace. It is sent automatically at the start of every chat — the user never has to re-explain context, role, or behavioral expectations.
-
-**To set a system prompt for a workspace:**
-
-1. Open the workspace
-2. Click the **Settings icon** next to the workspace name
-3. Navigate to the **Prompt** tab
-4. In the **System Prompt** field, enter your instructions
-5. Click **Save** / **Update workspace**
 
 **Example system prompt — Threat Intelligence workspace:**
 
@@ -844,11 +416,6 @@ address: threat actor TTPs, affected asset classes, exploitation likelihood, and
 recommended mitigations. Format analytical outputs with clear section headers. 
 Prioritize operational relevance over theoretical discussion.
 ```
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM workspace settings → Prompt tab showing the system prompt field populated with the Threat Intelligence prompt above
 
 **Example system prompt — Red Team workspace:**
 
@@ -870,8 +437,6 @@ classifications where applicable. Provide remediation recommendations with corre
 code examples.
 ```
 
----
-
 ### How System Prompts Carry Across All Chats
 
 This is one of the most operationally significant features of AnythingLLM's workspace model and is worth understanding clearly.
@@ -889,149 +454,6 @@ This means:
 **Practical impact:** An analyst opening the Threat Intelligence workspace and pasting in a CISA alert gets an immediate structured analysis — threat actor TTPs, affected asset classes, recommended mitigations — without any setup conversation. The workspace did that work ahead of time.
 
 **System prompt persistence across workspace updates:** If you edit a workspace's system prompt, the updated prompt applies to all new chats going forward. Existing chat histories retain the prompt that was active when those conversations occurred.
-
----
-
-## Ollama Maintenance: Updating Models and Verifying the Library
-
-Keeping models current matters for security work — model developers regularly push updated versions that improve reasoning accuracy, reduce hallucination rates, and sometimes patch behavioral issues. This section covers the full maintenance workflow.
-
----
-
-### View All Installed Models
-
-Open a terminal (Command Prompt or PowerShell) and run:
-
-```
-ollama list
-```
-
-**Example output from this system:**
-
-```
-NAME                                                    ID              SIZE      MODIFIED
-llama3.1:70b-instruct-q4_K_M                            711a9e8463af    42 GB     3 weeks ago
-ALIENTELLIGENCE/cybersecuritythreatanalysisv2:latest    b549743c0af8    4.7 GB    7 weeks ago
-deepseek-coder:33b-instruct                             acec7c0b0fd9    18 GB     7 weeks ago
-jimscard/blackhat-hacker:v2                             7ca851d0e11c    9.2 GB    7 weeks ago
-phi4-reasoning:14b                                      47e2630ccbcd    11 GB     7 weeks ago
-qwen3:32b                                               030ee887880f    20 GB     7 weeks ago
-deepseek-r1:32b                                         edba8017331d    19 GB     7 weeks ago
-```
-
-The output shows: model name and tag, model ID hash, size on disk, and when it was last modified (pulled or updated).
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Terminal window showing the full output of `ollama list` displaying all 8 deployed models with sizes and modified dates
-
----
-
-### Check Ollama Service Status
-
-Verify the Ollama background service is running:
-
-```
-ollama serve
-```
-
-If Ollama is already running as a service, this will return a message indicating the address is already in use — which confirms it is active. You can also check Task Manager → Services and look for the Ollama process.
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Terminal showing Ollama serve response confirming the service is running, OR Task Manager → Services tab with the Ollama service visible and status showing Running
-
----
-
-### Pull a New Model
-
-To download a model you don't have yet:
-
-```
-ollama pull modelname:tag
-```
-
-Examples:
-
-```
-ollama pull qwen3:32b
-ollama pull deepseek-r1:32b
-ollama pull ALIENTELLIGENCE/cybersecuritythreatanalysisv2
-```
-
-Ollama will show a download progress bar. Large models (18–42GB) will take significant time depending on your connection speed. Downloads resume automatically if interrupted.
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Terminal window showing an active `ollama pull` download with the progress bar, percentage, and download speed visible
-
----
-
-### Update an Existing Model to the Latest Version
-
-Re-pulling a model you already have checks for and downloads any updated version:
-
-```
-ollama pull modelname:tag
-```
-
-If the model is already at the latest version, Ollama will confirm this and skip the download. If an update exists, it downloads the new version and replaces the old one.
-
-**To update all models in one pass**, run a pull on each model in your library sequentially. There is no single `ollama update --all` command — each model must be pulled individually.
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Terminal showing `ollama pull` on an already-current model confirming "up to date" with no download, OR showing a version update downloading
-
----
-
-### Remove a Model
-
-To delete a model and free up disk space:
-
-```
-ollama rm modelname:tag
-```
-
-Example:
-
-```
-ollama rm phi4-reasoning:14b
-```
-
-Confirm removal with `ollama list` afterward.
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Terminal showing `ollama rm` command completing successfully, followed by `ollama list` output confirming the model is no longer present
-
----
-
-### Run a Quick Model Test
-
-To verify a model is working correctly after pulling or updating:
-
-```
-ollama run modelname:tag "Your test prompt here"
-```
-
-Example:
-
-```
-ollama run qwen3:32b "List three common lateral movement techniques used in APT campaigns."
-```
-
-This runs an inference pass directly in the terminal. Watch Task Manager → GPU Performance during the run to confirm VRAM is being utilized. A working model will show VRAM utilization spike within a few seconds of the command executing.
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> Split view or two screenshots — (1) terminal showing `ollama run qwen3:32b` with a response generating, and (2) Task Manager GPU tab showing VRAM utilization spike during that same run
 
 ---
 
@@ -1175,7 +597,6 @@ The practical conclusion: local models at current hardware limits cannot match t
 
 ---
 
-
 ## Security and Privacy Considerations
 
 Local AI deployment is often framed as a performance or cost decision. For cybersecurity work, it is primarily a security decision. This section explains why data sovereignty matters beyond inference speed and what the real risks of cloud AI usage are in sensitive operational contexts.
@@ -1255,11 +676,6 @@ active exploitation in the wild targeting critical infrastructure sectors.
 - Exploitation likelihood assessment
 - Prioritized mitigation steps
 
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM Threat Intelligence workspace showing a CISA alert pasted as input and the model's structured analytical response
-
 **What this demonstrates:** The system prompt eliminates the need to re-explain analytical framework at the start of every session. The model behaves as a trained threat analyst from the first token of every response.
 
 ---
@@ -1285,11 +701,6 @@ subprocess.call(["/bin/sh", "-i"])
 ```
 
 **Step 3:** The model identifies this as a reverse shell, explains the socket connection mechanism, identifies the hardcoded C2 IP and port, explains what `dup2` does in this context, and assesses the capability and likely intent.
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM Code Review workspace showing malicious code submitted and the model's vulnerability/capability breakdown response
 
 **What this demonstrates:** Sensitive code — potentially from an active incident — never leaves the local machine. A cloud-based tool would transmit this code to external servers, creating chain-of-custody and classification concerns.
 
@@ -1317,11 +728,6 @@ T+48:00 - Large data transfer to external destination
 
 **Step 3:** The R1 model works through the chain step by step — showing its reasoning at each stage — and maps the sequence to a complete attack lifecycle: initial access → execution → credential access → lateral movement → persistence → exfiltration.
 
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM Attack Chain workspace showing the event timeline submitted and the model's step-by-step campaign reconstruction with MITRE ATT&CK stage mapping
-
 **What this demonstrates:** The R1 model's chain-of-thought reasoning is visible in the output — the analyst can follow the logic and identify where the model's assessment differs from their own, rather than just receiving a black-box conclusion.
 
 ---
@@ -1344,11 +750,6 @@ Patch status: 30 days behind current
 ```
 
 **Step 3:** The model responds from an attacker's perspective — enumerating the most likely exploitation paths, prioritizing by ease of exploitation and potential impact, and identifying the configuration details that represent the greatest risk.
-
-
----
-> ## 📸 SCREENSHOT NEEDED
-> AnythingLLM Red Team workspace showing a network configuration submitted and the model's adversarial assessment response
 
 ---
 
@@ -1575,8 +976,9 @@ Memory on the GPU used to store model weights during inference. VRAM is faster t
 | Summer 2025 | Tested Docker Desktop + ngrok architecture — evaluated and rejected |
 | Summer 2025 | Tested WSL deployment architecture — evaluated and rejected |
 | Fall 2025 | Settled on native Windows as production architecture |
-| Fall 2025 | Integrated AnythingLLM v1.8.4 as workspace interface layer |
+| Fall 2025 | Integrated AnythingLLM as workspace interface layer |
 | January 2026 | Current production library — 150GB, task-routed model collection |
+| April 2026 | Production deployment running Ollama v0.21.2 and AnythingLLM v1.10.0 |
 | May 2026 | Graduating FTCC — targeting GS-11/12 federal cybersecurity positions |
 
 ---
