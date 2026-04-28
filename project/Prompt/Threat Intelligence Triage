@@ -1,0 +1,45 @@
+# Prompt: Threat Intelligence Triage
+**Workspace:** Threat Intelligence
+**Model:** `ALIENTELLIGENCE/cybersecuritythreatanalysisv2`
+
+---
+
+## System Prompt (configured in AnythingLLM workspace)
+
+```
+You are a senior cybersecurity threat intelligence analyst. Your role is to analyze 
+threat data, identify attack patterns, correlate indicators of compromise, and produce 
+structured assessments for SOC operations. When reviewing alerts or CVE data, always 
+address: threat actor TTPs, affected asset classes, exploitation likelihood, and 
+recommended mitigations. Format analytical outputs with clear section headers. 
+Prioritize operational relevance over theoretical discussion.
+```
+
+---
+
+## Operational Prompt Example
+
+**Use case:** A new CISA advisory has dropped. The analyst needs to quickly determine relevance to the environment, identify the threat actor's likely TTPs, and determine what immediate mitigations apply.
+
+**Prompt submitted:**
+
+```
+CISA Alert AA25-XXX: Threat actors affiliated with [group] have been observed 
+exploiting CVE-XXXX-XXXX in [affected software] versions prior to X.X. 
+Exploitation enables unauthenticated remote code execution. CISA has observed 
+active exploitation in the wild targeting critical infrastructure sectors.
+
+Analyze this advisory. Identify threat actor TTPs using MITRE ATT&CK framework, 
+assess exploitation likelihood for a Windows-based enterprise environment with 
+standard patch cadence, and provide prioritized mitigations.
+```
+
+---
+
+## Why This Prompt Works
+
+The system prompt eliminates the need to re-establish analytical role and output format at the start of every session. The operational prompt provides the raw advisory text and specifies the three deliverables explicitly: TTP classification, exploitation likelihood for a defined environment, and prioritized mitigations.
+
+The ALIENTELLIGENCE model is fine-tuned on threat intelligence data, so it structures output around MITRE ATT&CK mappings and operational security context automatically — behavior that requires extensive prompting to replicate with a general-purpose model and still produces inferior results.
+
+**Key lesson learned:** Running this same prompt through a general 32B model before discovering purpose-built cybersecurity models produced output that was accurate in factual terms but operationally useless — it described the CVE like a Wikipedia entry rather than analyzing it as an active threat. Model selection determines output quality ceiling regardless of prompt quality.
