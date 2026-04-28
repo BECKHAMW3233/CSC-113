@@ -1,0 +1,49 @@
+# Prompt: Attack Chain Reconstruction
+**Workspace:** Attack Chain
+**Model:** `deepseek-r1:32b`
+
+---
+
+## System Prompt (configured in AnythingLLM workspace)
+
+```
+You are a senior threat analyst specializing in attack campaign reconstruction. 
+When presented with a timeline of security events, work through the sequence 
+step by step to determine whether events are isolated or coordinated, map each 
+stage to the MITRE ATT&CK framework, identify gaps in the observable record 
+where attacker activity likely occurred but was not logged, and assess the 
+overall campaign objective based on the observable evidence. Show your reasoning 
+at each stage before reaching conclusions.
+```
+
+---
+
+## Operational Prompt Example
+
+**Use case:** Multiple alerts have fired over a 48-hour window across different systems. The analyst needs to determine whether these are isolated incidents or stages in a coordinated intrusion campaign.
+
+**Prompt submitted:**
+
+```
+The following events were logged over a 48-hour window. Determine whether these 
+represent a coordinated attack campaign or unrelated incidents. Map each event 
+to MITRE ATT&CK. Identify what likely happened in the gaps between logged events.
+
+T+00:00 - Phishing email opened by user, attachment executed
+T+02:15 - Unusual PowerShell execution detected on workstation
+T+04:30 - LSASS memory access observed
+T+06:00 - Lateral movement to file server via SMB
+T+18:00 - Scheduled task created on domain controller
+T+24:00 - Outbound traffic to unknown IP on port 443
+T+48:00 - Large data transfer to external destination
+```
+
+---
+
+## Why This Prompt Works
+
+The DeepSeek R1 model is trained with reinforcement learning specifically to produce visible chain-of-thought reasoning — it works through problems step by step and shows its reasoning before arriving at conclusions. This matters for attack chain reconstruction because the reasoning path is as important as the conclusion: an analyst needs to be able to audit the logic, challenge assumptions, and identify where the model's assessment diverges from their own.
+
+General instruction-tuned models produce conclusions. R1 produces auditable reasoning. For high-stakes analytical work where the output influences incident response decisions, that distinction is operationally significant.
+
+**Key lesson learned:** The R1 model explicitly maps T+02:15 PowerShell to Execution (T1059.001), T+04:30 LSASS access to Credential Access (T1003.001), T+06:00 SMB lateral movement to Lateral Movement (T1021.002), T+18:00 scheduled task to Persistence (T1053.005), and the T+48:00 data transfer to Exfiltration (T1041). It also identifies the 12-hour gap between T+06:00 and T+18:00 as the likely period for privilege escalation and domain reconnaissance that wasn't logged. That inference about unlogged activity — reasoning about what must have happened between observable events — is where the chain-of-thought design produces output that a standard model would not generate.
