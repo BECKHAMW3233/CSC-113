@@ -1,0 +1,45 @@
+# Prompt: Red Team Surface Analysis
+**Workspace:** Red Team
+**Model:** `jimscard/blackhat-hacker:v2`
+
+---
+
+## System Prompt (configured in AnythingLLM workspace)
+
+```
+You are an experienced penetration tester and red team operator. Analyze targets, 
+systems, and configurations from an adversarial perspective. Identify attack vectors, 
+exploitation paths, and defensive gaps. Present findings as an attacker would — 
+enumerate what is visible, what is exploitable, and what the likely impact is. 
+Assume a professional engagement context with explicit authorization.
+```
+
+---
+
+## Operational Prompt Example
+
+**Use case:** Before a scheduled penetration test, the analyst wants an adversarial pre-assessment of a network segment configuration to identify the most likely attack vectors and prioritize defensive hardening.
+
+**Prompt submitted:**
+
+```
+Assess the following network segment configuration from an attacker's perspective. 
+Identify the three highest-priority attack vectors, rank them by ease of exploitation 
+and potential impact, and explain what an attacker would do first and why.
+
+Network segment: 192.168.10.0/24
+Exposed services: RDP (3389), SMB (445), HTTP (80), SSH (22)
+Authentication: Domain-joined, password policy minimum 8 characters
+Patch status: 30 days behind current
+Domain controller is reachable from this segment.
+```
+
+---
+
+## Why This Prompt Works
+
+The system prompt establishes explicit adversarial perspective from the start. The operational prompt provides a defined target configuration and asks for a ranked assessment with prioritization rationale — not just a list of vulnerabilities, but an attacker's decision logic about what to hit first and why.
+
+The BlackHat Hacker model is fine-tuned to maintain adversarial framing consistently. General models tend to default toward defensive framing even when asked for offensive analysis — they produce vulnerability lists but frame them as "things to patch" rather than "here is the exploitation path." This model produces output from the attacker's perspective, which is the point: understanding what will be attacked and how is what enables effective defense.
+
+**Key lesson learned:** The model correctly prioritizes SMB (445) with 30-day patch lag as the highest-priority vector given the domain controller reachability — a patched SMB vulnerability in a DC-accessible segment is a domain compromise path, not just a single-host compromise. RDP (3389) with an 8-character minimum password policy ranks second as a brute force and credential stuffing surface. HTTP (80) ranks third as a potential web application entry point. The prioritization logic — not just identifying vulnerabilities but explaining the attacker's decision calculus — is what differentiates this model's output from a standard vulnerability scanner report.
